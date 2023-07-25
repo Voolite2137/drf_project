@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from . import models
 from .models import kinds
-
+from django.contrib.auth.models import User
 class AnimalsSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Animals
@@ -39,3 +39,12 @@ class PositionsSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Minimum wage is $7.25")
         else:
             return value
+        
+class UserRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id','username','password','email']
+
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()

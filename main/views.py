@@ -1,8 +1,15 @@
-from rest_framework import views,viewsets
+from rest_framework import views,status
 from .models import Animals,Cages, Employees, Positions
 from . import serializers
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+from django.http import Http404
+from django.http import HttpResponseRedirect
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import login,logout
 # Create your views here.
 class OverallView(views.APIView):
     def get(self,request):
@@ -10,10 +17,13 @@ class OverallView(views.APIView):
             'animals':reverse('animals', request=request),
             'cages':reverse('cages', request=request),
             'employees':reverse('employees', request=request),
-            'positions':reverse('positions',request=request)
+            'positions':reverse('positions',request=request),
+            'register':reverse('register',request=request),
+            'login':reverse('login',request=request)
             })
     
 class AnimalsOvearallView(views.APIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = serializers.AnimalsSerializer
     def get(self,request):
         queryset = Animals.objects.all()
@@ -126,3 +136,33 @@ class PositionsDetailedView(views.APIView):
     def delete(self,request,id):
         Positions.objects.get(id=id).delete()
         return Response({"message":"Position deleted"})
+    
+class RegisterUser(views.APIView):
+    serializer_class = serializers.UserRegisterSerializer
+    def post(self,request):
+        serializer = serializers.UserRegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            user = User.objects.get(username = request.data['username'])
+            user.set_password(request.data['password'])
+            user.save()
+            token = Token.objects.create(user=user)
+            return Response({'token':token.key,'user':serializer.data})
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+class LoginUser(views.APIView):
+    serializer_class = serializers.UserLoginSerializer
+    def post(self,request):
+        user = get_object_or_404(User,username = request.data['username'])
+        if not user.check_password(request.data['password']):
+            raise Http404
+        serializer = serializers.UserLoginSerializer(user)
+        token = Token.objects.get(user=user)
+        login(request,user)
+        return Response({"token":token.key,"user":serializer.data})
+
+class LogoutUser(views.APIView):
+    def get(self,request):
+        logout(request)
+        return HttpResponseRedirect(reverse('main',request=request))
+        
