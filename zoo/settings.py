@@ -1,3 +1,5 @@
+import os
+
 """
 Django settings for zoo project.
 
@@ -37,9 +39,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'rest_framework',
-    'main',
-    'rest_framework.authtoken',
+    "rest_framework",
+    "main",
+    "rest_framework.authtoken",
 ]
 
 MIDDLEWARE = [
@@ -75,7 +77,7 @@ WSGI_APPLICATION = "zoo.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+"""
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -86,6 +88,8 @@ DATABASES = {
         'PORT':'5432',
     }
 }
+"""
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "db.sqlite3"}}
 
 
 # Password validation
@@ -129,5 +133,4 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = ["*"]

@@ -16,13 +16,18 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.BigAutoField(
-                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
                     ),
                 ),
                 ("name", models.CharField(max_length=20)),
                 (
                     "kind",
-                    models.CharField(choices=[("l", "lion"), ("e", "elephant")], max_length=20),
+                    models.CharField(
+                        choices=[("l", "lion"), ("e", "elephant")], max_length=20
+                    ),
                 ),
                 ("additionalInfo", models.TextField(max_length=300)),
             ],
@@ -33,7 +38,10 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.BigAutoField(
-                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
                     ),
                 ),
                 ("name", models.CharField(max_length=40)),
@@ -46,14 +54,19 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.BigAutoField(
-                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
                     ),
                 ),
                 ("age", models.IntegerField()),
                 (
                     "position",
                     models.ForeignKey(
-                        null=True, on_delete=django.db.models.deletion.SET_NULL, to="main.positions"
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="main.positions",
                     ),
                 ),
             ],
@@ -64,19 +77,25 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.BigAutoField(
-                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
                     ),
                 ),
                 (
                     "category",
                     models.CharField(
-                        choices=[("s", "small"), ("m", "medium"), ("l", "large")], max_length=10
+                        choices=[("s", "small"), ("m", "medium"), ("l", "large")],
+                        max_length=10,
                     ),
                 ),
                 (
                     "caretaker",
                     models.ForeignKey(
-                        null=True, on_delete=django.db.models.deletion.SET_NULL, to="main.employees"
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="main.employees",
                     ),
                 ),
             ],
